@@ -2,11 +2,13 @@ import pygame
 import random
 
 pygame.init()
+# titulo da janela do pygane, e definição de largura e altura
 pygame.display.set_caption("jogo da cobra")
 largura, altura = 800, 600
 tela = pygame.display.set_mode((largura, altura))
 relogio = pygame.time.Clock()
 
+# definindo cores para simplificar
 preto = (0, 0, 0)
 branca = (255, 255, 255)
 vermelha = (255, 0, 0)
@@ -14,9 +16,11 @@ verde = (0, 255, 0)
 azul = (0, 0, 255)
 roza = (255, 128, 192)
 
+# tamanho da cobra ( ou seja tamanho do quadrado) / abaixo, abaixo velocidade da cobra
 tamanho_quad = 10
 velocidade_game = 12
 
+# Funçoes para POE - programação orientada a evento
 def velocidade_evento(tecla):
     velocidade_x, velocidade_y = 0, 0
     if tecla == pygame.K_DOWN:

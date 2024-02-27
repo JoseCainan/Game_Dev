@@ -80,57 +80,61 @@ def rodar_jogo():
     game_over1 = False
     game_over2 = False
 
+# decidindo a posição inical da cabeças das cobras
     x1, y1 = largura / 4, altura / 2
     x2, y2 = 3 * largura / 4, altura / 2
 
+# velocidade inicial das cobras, as cobras começam paradas
     velo_x1, velo_y1 = 0, 0
     velo_x2, velo_y2 = 0, 0
 
+# as cobras com um de tamanho
     tamanho_cobra1 = 1
     tamanho_cobra2 = 1
 
+# cada pixels é uma parte do corpo da cobra, a lista armazena todo o corpo
     pixels1 = []
     pixels2 = []
 
     comida_x, comida_y = rand_comida()
 
     while not (game_over1 and game_over2):
-        for evento in pygame.event.get():
+        for evento in pygame.event.get(): # itera sobre todos os eventos de teclado e mouse
             if evento.type == pygame.QUIT:
                 game_over1 = True
                 game_over2 = True
-            elif evento.type == pygame.KEYDOWN:
+            elif evento.type == pygame.KEYUP:
                 # Controle da cobra 1
-                if evento.key in [pygame.K_DOWN, pygame.K_UP, pygame.K_RIGHT, pygame.K_LEFT]:
+                if evento.key in [pygame.K_DOWN, pygame.K_UP, pygame.K_RIGHT, pygame.K_LEFT]: # verifica se a teclas da cobra foram apertadas se sim chama a funçao para obter os valores 
                     velo_x1, velo_y1 = velocidade_evento(evento.key)
 
                 # Controle da cobra 2
-                if evento.key in [pygame.K_s, pygame.K_w, pygame.K_d, pygame.K_a]:
+                if evento.key in [pygame.K_s, pygame.K_w, pygame.K_d, pygame.K_a]: # mesma coisa da cobra um
                     velo_x2, velo_y2 = velocidade_evento2(evento.key)
 
+        # atualiza as posições das cobras
         x1 += velo_x1
         y1 += velo_y1
         pixels1.append([x1, y1])
         if len(pixels1) > tamanho_cobra1:
             del pixels1[0]
 
-        if (
-            x1 < 0 or x1 >= largura or
-            y1 < 0 or y1 >= altura or
-            [x1, y1] in pixels1[:-1] or
-            [x1, y1] == [x2, y2]
-        ):
-            game_over1 = True
-
-        if x1 == comida_x and y1 == comida_y:
-            tamanho_cobra1 += 1
-            comida_x, comida_y = rand_comida()
 
         x2 += velo_x2
         y2 += velo_y2
         pixels2.append([x2, y2])
         if len(pixels2) > tamanho_cobra2:
             del pixels2[0]
+        
+        
+        if x1 < 0 or x1 >= largura or y1 < 0 or y1 >= altura or [x1, y1] in pixels1[:-1] or [x1, y1] == [x2, y2]:
+            game_over1 = True
+
+        if x1 == comida_x and y1 == comida_y:
+            tamanho_cobra1 += 1
+            comida_x, comida_y = rand_comida()
+
+        
 
         if (
             x2 < 0 or x2 >= largura or

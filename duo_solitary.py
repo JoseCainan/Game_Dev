@@ -18,7 +18,7 @@ roza = (255, 128, 192)
 
 # tamanho da cobra ( ou seja tamanho do quadrado) / abaixo, abaixo velocidade da cobra
 tamanho_quad = 10
-velocidade_game = 12
+velocidade_game = int(12)
 
 # Funçoes para POE - programação orientada a evento
 def velocidade_evento(tecla):
@@ -79,7 +79,7 @@ def pontuacao(ponto, cor, posicao):
 def rodar_jogo():
     game_over1 = False
     game_over2 = False
-
+    aux_velocidade = velocidade_game
 # decidindo a posição inical da cabeças das cobras
     x1, y1 = largura / 4, altura / 2
     x2, y2 = 3 * largura / 4, altura / 2
@@ -126,16 +126,16 @@ def rodar_jogo():
         if len(pixels2) > tamanho_cobra2:
             del pixels2[0]
         
-        
+        # verifica se a cobra bateu nela mesma, nas bordas ou na cobra dois
         if x1 < 0 or x1 >= largura or y1 < 0 or y1 >= altura or [x1, y1] in pixels1[:-1] or [x1, y1] == [x2, y2]:
             game_over1 = True
 
+        # verifica se a cabeça da cobra atingiu a comida e incrementa os pontos
         if x1 == comida_x and y1 == comida_y:
             tamanho_cobra1 += 1
             comida_x, comida_y = rand_comida()
 
-        
-
+        # verifica se a cobra bateu nela mesma, nas bordas ou na cobra dois
         if (
             x2 < 0 or x2 >= largura or
             y2 < 0 or y2 >= altura or
@@ -144,10 +144,19 @@ def rodar_jogo():
         ):
             game_over2 = True
 
+        # verifica se a cabeça da cobra atingiu a comida e incrementa os pontos
         if x2 == comida_x and y2 == comida_y:
             tamanho_cobra2 += 1
             comida_x, comida_y = rand_comida()
+        
+       
+        # verifica, se os tamanhos das cobras e a velocidade game dividido por 5 o resto  for 0  a velocidade aumenta
+        '''if (tamanho_cobra1 - 1)%5 or (tamanho_cobra2 - 1)%5 == (velocidade_game % 5):
+            velocidade_game += 2'''
+        
+        
 
+        # redesenhando a tela para novas posições e pontos
         tela.fill(preto)
         mostra_comida(tamanho_quad, comida_x, comida_y)
         mostrar_cobra(tamanho_quad, pixels1)
@@ -156,6 +165,8 @@ def rodar_jogo():
         pontuacao(tamanho_cobra2 - 1, azul, [largura // 2 + 1, 1])
 
         pygame.display.update()
+
+        # controla a taxa de frames por segundos
         relogio.tick(velocidade_game)
 
     pygame.quit()

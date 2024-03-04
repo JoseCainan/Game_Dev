@@ -20,6 +20,9 @@ roza = (255, 128, 192)
 tamanho_quad = 10
 velocidade_game = int(12)
 
+musica_fundo = pygame.mixer.music.load('smw_lost_a_life.wav')
+pygame.mixer.music.play(-1)
+
 # Funçoes para POE - programação orientada a evento
 def velocidade_evento(tecla):
     velocidade_x, velocidade_y = 0, 0
